@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+﻿import React, { Component } from 'react';
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import HomeScreen from './screens/HomeScreen';
 import LoadingScreen from './screens/LoadingScreen'
-
+import { Button, View, Text } from 'react-native';
 import * as firebase from 'firebase';
 
 var firebaseConfig = {
@@ -41,3 +41,5 @@ export default createAppContainer(
     }
   )
 )
+
+

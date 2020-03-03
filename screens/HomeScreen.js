@@ -29,8 +29,8 @@ class HomeScreen extends Component {
               provider={PROVIDER_GOOGLE}
               style={{flex:1}}
               region={{
-                  latitude: 42.88204,
-                  longitude: 74.582748,
+                  latitude: 30.5044,
+                  longitude: -90.4612,
                   latitudeDelta:0.0922,
                   longitudeDelta:0.0421
               }}
