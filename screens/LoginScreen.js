@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, StatusBar} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import * as firebase from 'firebase'
 
 class LoginScreen extends Component {
+    static navigationOptions = {
+        headers: null
+    };
     state = {
         email: "",
         password: "",
@@ -20,6 +23,7 @@ class LoginScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
+                <StatusBar barStyle="light-content"></StatusBar>
                 <Text style={styles.gretting}>Welcome to MOR</Text>
 
                 <View style={styles.errorMessage}>
@@ -45,6 +49,8 @@ class LoginScreen extends Component {
                         New to MOR?  <Text style={{fontWeight: "500", color: '#E9446A' }}>Sign up</Text>
                     </Text>
                 </TouchableOpacity>
+                
+
 
             </View>
             
