@@ -42,11 +42,11 @@ class LoginScreen extends Component {
                     
                 </View>
                 <TouchableOpacity style={styles.button} onPress={this.handleLogin}>
-                    <Text style={{color: "#FFF", fontWeight:"500"}}>Sign in</Text>
+                    <Text style={{ color: "#FFF", fontWeight:"500"}}>Sign in</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={{alignSelf:"center", marginTop:32}} onPress={()=>this.props.navigation.navigate("Register")}>
-                    <Text style={{color:"#414959", fontSize: 13 }}>
-                        New to MOR?  <Text style={{fontWeight: "500", color: '#E9446A' }}>Sign up</Text>
+                    <Text style={{ color:"#000000", fontSize: 13 }}>
+                        New to MOR?  <Text style={{ fontWeight: "500", color: '#6483a5' }}>Sign up</Text>
                     </Text>
                 </TouchableOpacity>
                 
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     },
     button:{
         marginHorizontal: 30,
-        backgroundColor: "#E9446A",
+        backgroundColor: "#6483a5",
         borderRadius:6,
         height: 50,
         alignItems:"center",
