@@ -13,48 +13,72 @@ import PostScreen from "./screens/PostScreen";
 import NotificationScreen from "./screens/NotificationScreen";
 
 import * as firebase from 'firebase';
+import firebaseKeys from './config';
 
-var firebaseConfig = {
-  apiKey: "AIzaSyAvHslFrqopTvuW_jScOQXBmfG65Hjf7N8",
-  authDomain: "mor411.firebaseapp.com",
-  databaseURL: "https://mor411.firebaseio.com",
-  projectId: "mor411",
-  storageBucket: "mor411.appspot.com",
-  messagingSenderId: "1020872581336",
-  appId: "1:1020872581336:web:da336330b6a21bbe1f77ad"
-};
+var firebaseConfig = firebaseKeys
+
 // Initialize Firebase
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
-const AppTabNavigator = createBottomTabNavigator(
+const AppContainer = createStackNavigator(
   {
-    Home:{
-      screen: HomeScreen,
-      navigationOptions:{
-        tabBarIcon:({tintColor}) => <Ionicons name="ios-home" size={24} color={tintColor}/>
+    default: createBottomTabNavigator(
+      {
+        Home:{
+          screen: HomeScreen,
+          navigationOptions:{
+            tabBarIcon:({tintColor}) => <Ionicons name="ios-home" size={24} color={tintColor}/>
+          }
+        },
+        Post:{
+          screen: PostScreen,
+          navigationOptions:{
+            tabBarIcon:({tintColor}) => <Ionicons name="ios-add-circle" size={24} color={tintColor}/>
+          }
+        },
+        Notification:{
+          screen: NotificationScreen,
+          navigationOptions:{
+            tabBarIcon:({tintColor}) => <Ionicons name="ios-notifications" size={24} color={tintColor}/>
+          }
+        },
+        Setting:{
+          screen: SettingScreen,
+          navigationOptions:{
+            tabBarIcon:({tintColor}) => <Ionicons name="ios-settings" size={24} color={tintColor}/>
+          }
+        }
+      },
+      {
+        defaultNavigationOptions:{
+          tabBarOnPress: ({navigation, defaultHandler}) => {
+            if (navigation.state.key === "Post"){
+              navigation.navigate("postModal")
+            } else {
+              defaultHandler()
+            }
+          }
+      },
+        tabBarOptions:{
+          activeTintColor: "#161F3D",
+          inactiveTintColor: "#B8BBC4",
+          showLabel: false
+        }
       }
-    },
-    Post:{
-      screen: PostScreen,
-      navigationOptions:{
-        tabBarIcon:({tintColor}) => <Ionicons name="ios-add-circle" size={24} color={tintColor}/>
+    ),
+      postModal: {
+        screen: PostScreen
       }
-    },
-    Notification:{
-      screen: NotificationScreen,
-      navigationOptions:{
-        tabBarIcon:({tintColor}) => <Ionicons name="ios-notifications" size={24} color={tintColor}/>
-      }
-    },
-    Setting:{
-      screen: SettingScreen,
-      navigationOptions:{
-        tabBarIcon:({tintColor}) => <Ionicons name="ios-settings" size={24} color={tintColor}/>
-      }
-    }
+  },
+  {
+      mode: "modal",
+      headerMode:"none",
+      //initialRouteName: "postModal"
+
   }
 )
+
 
 const AuthStack = createStackNavigator({
   Login: LoginScreen,
@@ -62,14 +86,14 @@ const AuthStack = createStackNavigator({
 },
   {
     headerMode:'none',
-    header: null
+    header: null,
   })
 
 export default createAppContainer(
   createSwitchNavigator(
     {
       Loading: LoadingScreen,
-      App: AppTabNavigator,
+      App: AppContainer,
       Auth: AuthStack
     },
     {
