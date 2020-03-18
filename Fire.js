@@ -5,14 +5,12 @@ class Fire {
         firebase.initializeApp(firebaseKeys)
     }
 
-    addPost = async ({address, latitude, longtitude, description, localUri}) => {
+    addPost = async ({address, description, localUri}) => {
         const remoteUri = await this.uploadPhotoAsync(localUri)
 
         return new Promise((res,rej)=>{
             this.firestore.collection("post").add({
                 address,
-                latitude,
-                longtitude,
                 description,
                 uid: this.uid,
                 timestamp: this.timestamp,
@@ -26,7 +24,6 @@ class Fire {
             })
         })
     }
-
     uploadPhotoAsync = async uri => {
         const path = `photo/${this.uid}/${Date.now()}.jpg`
 
