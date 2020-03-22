@@ -1,51 +1,53 @@
 import React, { Component } from 'react';
 import {View, Text, StyleSheet} from 'react-native';
+import * as firebase from 'firebase'
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
-import * as Location from 'expo-location';
-import * as Permissions from 'expo-permissions';
+import MapView, {PROVIDER_GOOGLE} from 'react-native-maps'
 
 class HomeScreen extends Component {
-    constructor(props){
-        super(props);
-        this.state ={
-            region: null
-        }
-        this._getLocationAsync();
+    state = {
+        email: "",
+        displayName: ""
+    };
+    componentDidMount() {
+        const { email, displayName } = firebase.auth().currentUser;
+        this.setState({ email, displayName });
     }
-    _getLocationAsync = async () => {
-        let {status} = await Permissions.askAsync(Permissions.LOCATION);
-        if(status!=='granted')
-            console.log('Permission denied')
-        
-        let location = await Location.getCurrentPositionAsync({enabledHighAccuracy: true})
-        let region = {
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-            latitudeDelta: 0.045,
-            longitudeDelta: 0.045,
-        }
-        this.setState({region:region})
-        console.log(this.state.region)
-
+    signOutUser = () => {
+        firebase.auth().signOut();
     }
     render() {
         return (
             <View style={styles.container}>
+                <View style={{ height: 60 }}>
+                    <Text>Hi {this.state.email}!</Text>
+                    <TouchableOpacity style={{ marginTop: 10, color: "#E9446A" }} onPress={this.signOutUser}>
+                        <Text>Log out</Text>
+                    </TouchableOpacity>
+                </View>
+
                 <MapView
-              style={{flex:1}}
-              region={this.state.region}
-              showsUserLocation={true}
-          />
-            </View>
-       
-            
-        );
+                    provider={PROVIDER_GOOGLE}
+                    style={{ flex: 1 }}
+                    region={{
+                        latitude: 30.5044,
+                        longitude: -90.4612,
+                        latitudeDelta: 0.0922,
+                        longitudeDelta: 0.0421
+                    }}
+                    showsUserLocation
+                />
+                <MapView.Marker
+                    coordinate={{ latitude: 30.5044, longitude: -90.4612 }}
+                    title={"Road dmged"}
+                    description={"123"}
+                    />
+            </View>)
     }
 }
 const styles = StyleSheet.create({
     container: {
-        flex:1,
+        flex: 1,
         //justifyContent: "center",
         //alignItems: "center"
     }
