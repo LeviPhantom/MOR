@@ -5,6 +5,7 @@ import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import HomeScreen from './screens/HomeScreen';
 import LoadingScreen from './screens/LoadingScreen'
+import Contacts from './screens/Contacts'
 import { Button, View, Text } from 'react-native';
 import * as firebase from 'firebase';
 
@@ -26,8 +27,10 @@ const AppStack = createStackNavigator({
 
 const AuthStack = createStackNavigator({
   Login: LoginScreen,
-  Register: RegisterScreen
+  Register: RegisterScreen,
+  Contact: Contacts
 })
+
 
 export default createAppContainer(
   createSwitchNavigator(
