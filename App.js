@@ -11,7 +11,6 @@ import LoadingScreen from './screens/LoadingScreen';
 import SettingScreen from "./screens/SettingScreen";
 import PostScreen from "./screens/PostScreen";
 import NotificationScreen from "./screens/NotificationScreen";
-import ProfileScreen from "./screens/ProfileScreen";
 
 import * as firebase from 'firebase';
 
@@ -54,12 +53,6 @@ const AppTabNavigator = createBottomTabNavigator(
         tabBarIcon:({tintColor}) => <Ionicons name="ios-settings" size={24} color={tintColor}/>
       }
     },
-    Profile: {
-       screen: ProfileScreen,
-       navigationOptions: {
-         tabBarIcon: ({ tintColor }) => <Ionicons name="ios-profiles" size={24} color={tintColor} />
-       }
-    }
   }
 )
 
