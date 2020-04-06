@@ -1,17 +1,35 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
+
+import * as firebase from "firebase";
 
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      region: null
+      region: null,
+      markers: []
     };
     this._getLocationAsync();
+  }
+  componentDidMount() {
+    this.getMapMarkers();
+  }
+  getMapMarkers() {
+    const firestore = firebase.firestore();
+    firestore
+      .collection("post")
+      .get()
+      .then(snapshot => {
+        snapshot.docs.forEach(doc => {
+          this.setState({ markers: [doc.data()] });
+          console.log(this.state.markers);
+        });
+      });
   }
   _getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -28,6 +46,7 @@ class HomeScreen extends Component {
     };
     this.setState({ region: region });
   };
+
   render() {
     return (
       <View style={styles.container}>
@@ -35,7 +54,18 @@ class HomeScreen extends Component {
           style={{ flex: 1 }}
           region={this.state.region}
           showsUserLocation={true}
-        />
+        >
+          {this.state.markers &&
+            this.state.markers.map((marker, index) => (
+              <MapView.Marker
+                key={index}
+                coordinate={{
+                  latitude: Number(marker.lattitude),
+                  longitude: Number(marker.longitude)
+                }}
+              />
+            ))}
+        </MapView>
       </View>
     );
   }
@@ -43,8 +73,6 @@ class HomeScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1
-    //justifyContent: "center",
-    //alignItems: "center"
   }
 });
 

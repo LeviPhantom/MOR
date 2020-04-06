@@ -74,11 +74,10 @@ class PostScreen extends Component {
       enabledHighAccuracy: true
     });
     let coords = {
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude
+      longitude: location.coords.longitude,
+      latitude: location.coords.latitude
     };
     this.setState({ currentSpot: coords });
-    console.log(this.state.currentSpot);
   };
   handleGPS = () => {
     if (this.state.address === "" && this.state.description !== "") {
@@ -87,7 +86,8 @@ class PostScreen extends Component {
           address: this.state.address.trim(),
           description: this.state.description.trim(),
           localUri: this.state.image,
-          coordinates: this.state.currentSpot
+          latitude: this.state.currentSpot.latitude,
+          longitude: this.state.currentSpot.longitude
         })
         .then(ref => {
           this.setState({

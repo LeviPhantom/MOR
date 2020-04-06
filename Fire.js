@@ -7,7 +7,7 @@ class Fire {
     }
   }
 
-  addPost = async ({ address, description, localUri, coordinates }) => {
+  addPost = async ({ address, description, localUri, latitude, longitude }) => {
     const remoteUri = await this.uploadPhotoAsync(localUri);
 
     return new Promise((res, rej) => {
@@ -15,7 +15,8 @@ class Fire {
         .collection("post")
         .add({
           address,
-          coordinates,
+          latitude,
+          longitude,
           description,
           uid: this.uid,
           timestamp: this.timestamp,
