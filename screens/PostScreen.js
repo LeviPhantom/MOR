@@ -122,7 +122,7 @@ class PostScreen extends Component {
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
-            <Ionicons name="md-arrow-back" size={24} color="#D8D9DB"></Ionicons>
+            <Ionicons name="md-arrow-back" size={24} color="#D8D9DD"></Ionicons>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.handlePost}>
             <Text style={{ fontWeight: "500" }}>Post</Text>
@@ -148,7 +148,7 @@ class PostScreen extends Component {
           </View>
         </View>
         <TouchableOpacity style={styles.photo} onPress={this.pickImage}>
-          <Ionicons name="md-camera" size={32} color="#D8D9DB"></Ionicons>
+                <Ionicons name="md-camera" size={32} color="#D8D9DD"></Ionicons>
         </TouchableOpacity>
         <View style={{ marginHorizontal: 32, marginTop: 32, height: 160 }}>
           <Image
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 20,
     marginHorizontal: 30,
-    backgroundColor: "#0277bd",
+      backgroundColor: "#6483a5",
     borderRadius: 6,
     height: 50,
     alignItems: "center",

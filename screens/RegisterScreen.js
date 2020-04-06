@@ -71,7 +71,7 @@ class RegisterScreen extends Component {
         >
           <Text style={{ color: "#414959", fontSize: 13 }}>
             New to MOR?{" "}
-            <Text style={{ fontWeight: "500", color: "#E9446A" }}>Login</Text>
+                    <Text style={{ fontWeight: "500", color: "#6483a5" }}>Login</Text>
           </Text>
         </TouchableOpacity>
       </View>
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginHorizontal: 30,
-    backgroundColor: "#0277bd",
+      backgroundColor: "#6483a5",
     borderRadius: 6,
     height: 50,
     alignItems: "center",
