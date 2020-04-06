@@ -11,6 +11,7 @@ import LoadingScreen from "./screens/LoadingScreen";
 import SettingScreen from "./screens/SettingScreen";
 import PostScreen from "./screens/PostScreen";
 import NotificationScreen from "./screens/NotificationScreen";
+import AboutScreen from "./screens/AboutScreen";
 
 import * as firebase from "firebase";
 import firebaseKeys from "./config";
@@ -44,6 +45,14 @@ const AppContainer = createStackNavigator(
           navigationOptions: {
             tabBarIcon: ({ tintColor }) => (
               <Ionicons name="ios-notifications" size={24} color={tintColor} />
+            )
+          }
+        },
+        About: {
+          screen: AboutScreen,
+          navigationOptions: {
+            tabBarIcon: ({ tintColor }) => (
+              <Ionicons name="ios-alert" size={24} color={tintColor} />
             )
           }
         },
