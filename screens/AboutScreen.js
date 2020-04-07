@@ -5,7 +5,7 @@ class NotificationScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>About Screen</Text>
+        <Text>Contacts</Text>
       </View>
     );
   }
