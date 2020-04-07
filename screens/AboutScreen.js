@@ -5,7 +5,7 @@ class NotificationScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-            <Text>Contacts </Text>
+            <Text>Contacts for Louisiana </Text>
             <Text></Text>
             <Text>City Limit Contacts:</Text>
             <Text>Abita Springs 985-892-0711</Text>
