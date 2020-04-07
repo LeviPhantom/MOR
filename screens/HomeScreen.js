@@ -60,9 +60,10 @@ class HomeScreen extends Component {
               <MapView.Marker
                 key={index}
                 coordinate={{
-                  latitude: Number(marker.lattitude),
+                  latitude: Number(marker.latitude),
                   longitude: Number(marker.longitude)
                 }}
+                title={marker.description}
               />
             ))}
         </MapView>
