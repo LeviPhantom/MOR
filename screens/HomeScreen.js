@@ -12,7 +12,7 @@ class HomeScreen extends Component {
     super(props);
     this.state = {
       region: null,
-      markers: []
+      markers: [],
     };
     this._getLocationAsync();
   }
@@ -21,60 +21,65 @@ class HomeScreen extends Component {
   }
   getMapMarkers() {
     const firestore = firebase.firestore();
+    const array = [];
     firestore
       .collection("post")
       .get()
-      .then(snapshot => {
-        snapshot.docs.forEach(doc => {
-          this.setState({ markers: [doc.data()] });
-          console.log(this.state.markers);
+      .then((snapshot) => {
+        snapshot.docs.forEach((doc) => {
+          array.push(doc.data());
         });
+        this.setState({ markers: array });
+        console.log("Marks", this.state.markers);
       });
   }
+
   _getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status !== "granted") console.log("Permission denied");
 
     let location = await Location.getCurrentPositionAsync({
-      enabledHighAccuracy: true
+      enabledHighAccuracy: true,
     });
     let region = {
       latitude: location.coords.latitude,
       longitude: location.coords.longitude,
       latitudeDelta: 0.045,
-      longitudeDelta: 0.045
+      longitudeDelta: 0.045,
     };
     this.setState({ region: region });
   };
 
   render() {
-    return (
-      <View style={styles.container}>
-        <MapView
-          style={{ flex: 1 }}
-          region={this.state.region}
-          showsUserLocation={true}
-        >
-          {this.state.markers &&
-            this.state.markers.map((marker, index) => (
+    if (this.state.markers !== null) {
+      return (
+        <View style={styles.container}>
+          <MapView
+            style={{ flex: 1 }}
+            region={this.state.region}
+            showsUserLocation={true}
+          >
+            {this.state.markers.map((marker, index) => (
               <MapView.Marker
                 key={index}
-                coordinate={{
-                  latitude: Number(marker.latitude),
-                  longitude: Number(marker.longitude)
-                }}
                 title={marker.description}
+                description={marker.description}
+                coordinate={{
+                  latitude: marker.latitude,
+                  longitude: marker.longitude,
+                }}
               />
             ))}
-        </MapView>
-      </View>
-    );
+          </MapView>
+        </View>
+      );
+    }
   }
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
 
 export default HomeScreen;

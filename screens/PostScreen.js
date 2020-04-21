@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   Image,
   TextInput,
-  Alert
+  Alert,
+  Button,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Constants from "expo-constants";
@@ -18,7 +19,6 @@ import * as ImagePicker from "expo-image-picker";
 
 const firebase = require("firebase");
 require("firebase/firestore");
-
 class PostScreen extends Component {
   constructor(props) {
     super(props);
@@ -27,13 +27,20 @@ class PostScreen extends Component {
       image: "../assets/icon.png",
       description: "",
       coordinates: null,
-      currentSpot: null
+      currentSpot: null,
+      inProgress: false,
+      result: [],
     };
     this._getLocationAsync();
   }
   componentDidMount() {
     this.getPhotoPermission();
   }
+  _getAddressAsync = async (address) => {
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== "granted") console.log("Permission denied");
+    let location = await Location.geocodeAsync(address);
+  };
   getPhotoPermission = async () => {
     if (Constants.platform.ios) {
       const [status] = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -49,17 +56,19 @@ class PostScreen extends Component {
         .addPost({
           address: this.state.address.trim(),
           description: this.state.description.trim(),
-          localUri: this.state.image
+          localUri: this.state.image,
+          latitude: this.state.result.latitude,
+          longitude: this.state.result.longitude,
         })
-        .then(ref => {
+        .then((ref) => {
           this.setState({
             address: "",
             image: "../assets/icon.pn",
-            description: ""
+            description: "",
           });
           this.props.navigation.goBack();
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     } else {
@@ -71,11 +80,11 @@ class PostScreen extends Component {
     if (status !== "granted") console.log("Permission denied");
 
     let location = await Location.getCurrentPositionAsync({
-      enabledHighAccuracy: true
+      enabledHighAccuracy: true,
     });
     let coords = {
       longitude: location.coords.longitude,
-      latitude: location.coords.latitude
+      latitude: location.coords.latitude,
     };
     this.setState({ currentSpot: coords });
   };
@@ -87,17 +96,17 @@ class PostScreen extends Component {
           description: this.state.description.trim(),
           localUri: this.state.image,
           latitude: this.state.currentSpot.latitude,
-          longitude: this.state.currentSpot.longitude
+          longitude: this.state.currentSpot.longitude,
         })
-        .then(ref => {
+        .then((ref) => {
           this.setState({
             address: "",
             image: "../assets/icon.pn",
-            description: ""
+            description: "",
           });
           this.props.navigation.goBack();
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     } else {
@@ -109,12 +118,22 @@ class PostScreen extends Component {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3]
+      aspect: [4, 3],
     });
 
     if (!result.cancelled) {
       this.setState({ image: result.uri });
     }
+  };
+  _attemptGeocodeAsync = async () => {
+    this.setState({ inProgress: true });
+    let position = await Location.geocodeAsync(this.state.address);
+    let x = {
+      longitude: position[0].longitude,
+      latitude: position[0].latitude,
+    };
+    this.setState({ result: x });
+    this.setState({ inProgress: false });
   };
 
   render() {
@@ -134,21 +153,27 @@ class PostScreen extends Component {
             <TextInput
               style={styles.input}
               autoCapitalize="none"
-              onChangeText={address => this.setState({ address })}
+              onChangeText={(address) => this.setState({ address })}
             ></TextInput>
+            <TouchableOpacity
+              style={styles.smallbutton}
+              onPress={this._attemptGeocodeAsync}
+            >
+              <Text style={styles.buttonText}>Convert to coordinates</Text>
+            </TouchableOpacity>
           </View>
 
-          <View style={{ marginTop: 30 }}>
+          <View style={{ marginTop: 15 }}>
             <Text style={styles.inputTitle}>Description</Text>
             <TextInput
               style={styles.input}
               autoCapitalize="none"
-              onChangeText={description => this.setState({ description })}
+              onChangeText={(description) => this.setState({ description })}
             ></TextInput>
           </View>
         </View>
         <TouchableOpacity style={styles.photo} onPress={this.pickImage}>
-                <Ionicons name="md-camera" size={32} color="#D8D9DD"></Ionicons>
+          <Ionicons name="md-camera" size={32} color="#D8D9DD"></Ionicons>
         </TouchableOpacity>
         <View style={{ marginHorizontal: 32, marginTop: 32, height: 160 }}>
           <Image
@@ -156,25 +181,37 @@ class PostScreen extends Component {
             style={{ width: "100%", height: "100%" }}
           ></Image>
         </View>
-        <View style={{ alignItems: "center" }}>
+        <View style={{ alignItems: "center", marginBottom: 5 }}>
           <Text
             style={{
               color: "#8A8F9E",
-              fontSize: 17,
-              textTransform: "uppercase"
+              fontSize: 18,
+              textTransform: "uppercase",
             }}
           >
             _____ OR _____
           </Text>
+        </View>
+
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingHorizontal: 20,
+          }}
+        >
           <Text
             style={{
               color: "#8A8F9E",
               fontSize: 12,
-              textTransform: "uppercase"
+              textTransform: "uppercase",
             }}
           >
             Don't know the address ?
           </Text>
+          <TouchableOpacity style={styles.smallbutton}>
+            <Text style={styles.buttonText}>Convert to address</Text>
+          </TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.button} onPress={this.handleGPS}>
           <Text style={{ color: "#FFF", fontWeight: "500" }}>
@@ -187,11 +224,11 @@ class PostScreen extends Component {
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   form: {
     marginBottom: 35,
-    marginHorizontal: 20
+    marginHorizontal: 20,
   },
   header: {
     flexDirection: "row",
@@ -200,32 +237,57 @@ const styles = StyleSheet.create({
     paddingVertical: 13,
     borderBottomWidth: 1,
     borderBottomColor: "#D8D9DB",
-    marginBottom: 20
+    marginBottom: 20,
+  },
+  addressheader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 1,
+    paddingVertical: 13,
+    borderBottomWidth: 1,
+    borderBottomColor: "#D8D9DB",
+    marginBottom: 20,
   },
   inputTitle: {
     color: "#8A8F9E",
     fontSize: 10,
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   input: {
     borderBottomColor: "#8A8F9E",
     borderBottomWidth: StyleSheet.hairlineWidth,
     height: 36,
     fontSize: 15,
-    color: "#161F3D"
+    color: "#161F3D",
   },
   photo: {
     alignItems: "flex-end",
-    marginHorizontal: 32
+    marginHorizontal: 32,
   },
   button: {
     marginTop: 20,
     marginHorizontal: 30,
-      backgroundColor: "#6483a5",
+    backgroundColor: "#6483a5",
     borderRadius: 6,
     height: 50,
     alignItems: "center",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
+  smallbutton: {
+    backgroundColor: "#e53935",
+    padding: 5,
+    width: 85,
+    marginTop: 5,
+    borderRadius: 25,
+    marginBottom: 3,
+    alignSelf: "flex-end",
+    margin: 8,
+  },
+  buttonText: {
+    fontSize: 10,
+    fontWeight: "500",
+    color: "#ffffff",
+    textAlign: "center",
+  },
 });
 export default PostScreen;
