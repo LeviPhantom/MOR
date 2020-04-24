@@ -30,17 +30,14 @@ class PostScreen extends Component {
       currentSpot: null,
       inProgress: false,
       result: [],
+      currentAddress: null,
     };
     this._getLocationAsync();
   }
   componentDidMount() {
     this.getPhotoPermission();
+    this._getLocationAsync();
   }
-  _getAddressAsync = async (address) => {
-    let { status } = await Permissions.askAsync(Permissions.LOCATION);
-    if (status !== "granted") console.log("Permission denied");
-    let location = await Location.geocodeAsync(address);
-  };
   getPhotoPermission = async () => {
     if (Constants.platform.ios) {
       const [status] = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -92,7 +89,7 @@ class PostScreen extends Component {
     if (this.state.address === "" && this.state.description !== "") {
       Fire.shared
         .addPost({
-          address: this.state.address.trim(),
+          address: this.state.currentAddress.trim(),
           description: this.state.description.trim(),
           localUri: this.state.image,
           latitude: this.state.currentSpot.latitude,
@@ -135,7 +132,22 @@ class PostScreen extends Component {
     this.setState({ result: x });
     this.setState({ inProgress: false });
   };
+  _attemptReverseGeocodeAsync = async () => {
+    this.setState({ inProgress: true });
+    let result = await Location.reverseGeocodeAsync(this.state.currentSpot);
+    let address =
+      result[0].name +
+      " " +
+      result[0].city +
+      " " +
+      result[0].region +
+      " " +
+      result[0].postalCode;
+    this.setState({ currentAddress: address });
 
+    console.log(this.state.currentAddress);
+    this.setState({ inProgress: false });
+  };
   render() {
     return (
       <SafeAreaView style={styles.container}>
@@ -209,7 +221,10 @@ class PostScreen extends Component {
           >
             Don't know the address ?
           </Text>
-          <TouchableOpacity style={styles.smallbutton}>
+          <TouchableOpacity
+            style={styles.smallbutton}
+            onPress={this._attemptReverseGeocodeAsync}
+          >
             <Text style={styles.buttonText}>Convert to address</Text>
           </TouchableOpacity>
         </View>

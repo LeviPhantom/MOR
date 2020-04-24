@@ -30,7 +30,6 @@ class HomeScreen extends Component {
           array.push(doc.data());
         });
         this.setState({ markers: array });
-        console.log("Marks", this.state.markers);
       });
   }
 
@@ -63,7 +62,7 @@ class HomeScreen extends Component {
               <MapView.Marker
                 key={index}
                 title={marker.description}
-                description={marker.description}
+                description={marker.address}
                 coordinate={{
                   latitude: marker.latitude,
                   longitude: marker.longitude,
