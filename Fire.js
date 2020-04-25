@@ -7,7 +7,14 @@ class Fire {
     }
   }
 
-  addPost = async ({ address, description, localUri, latitude, longitude }) => {
+  addPost = async ({
+    address,
+    description,
+    localUri,
+    latitude,
+    longitude,
+    email,
+  }) => {
     const remoteUri = await this.uploadPhotoAsync(localUri);
 
     return new Promise((res, rej) => {
@@ -18,34 +25,32 @@ class Fire {
           latitude,
           longitude,
           description,
+          email,
           uid: this.uid,
           timestamp: this.timestamp,
-          image: remoteUri
+          image: remoteUri,
         })
-        .then(ref => {
+        .then((ref) => {
           res(ref);
         })
-        .catch(error => {
+        .catch((error) => {
           rej(error);
         });
     });
   };
-  uploadPhotoAsync = async uri => {
+  uploadPhotoAsync = async (uri) => {
     const path = `photo/${this.uid}/${Date.now()}.jpg`;
 
     return new Promise(async (res, rej) => {
       const reponse = await fetch(uri);
       const file = await reponse.blob();
 
-      let upload = firebase
-        .storage()
-        .ref(path)
-        .put(file);
+      let upload = firebase.storage().ref(path).put(file);
 
       upload.on(
         "state_changed",
-        snapshot => {},
-        err => {
+        (snapshot) => {},
+        (err) => {
           rej(err);
         },
         async () => {

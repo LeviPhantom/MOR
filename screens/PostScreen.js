@@ -31,13 +31,19 @@ class PostScreen extends Component {
       inProgress: false,
       result: [],
       currentAddress: null,
+      email: "",
     };
     this._getLocationAsync();
   }
   componentDidMount() {
     this.getPhotoPermission();
     this._getLocationAsync();
+    this.getUser();
   }
+  getUser = () => {
+    const { email, displayName } = firebase.auth().currentUser;
+    this.setState({ email, displayName });
+  };
   getPhotoPermission = async () => {
     if (Constants.platform.ios) {
       const [status] = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -56,6 +62,7 @@ class PostScreen extends Component {
           localUri: this.state.image,
           latitude: this.state.result.latitude,
           longitude: this.state.result.longitude,
+          email: this.state.email,
         })
         .then((ref) => {
           this.setState({
@@ -94,6 +101,7 @@ class PostScreen extends Component {
           localUri: this.state.image,
           latitude: this.state.currentSpot.latitude,
           longitude: this.state.currentSpot.longitude,
+          email: this.state.email,
         })
         .then((ref) => {
           this.setState({
