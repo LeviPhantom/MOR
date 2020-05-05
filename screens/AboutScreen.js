@@ -15,7 +15,8 @@ class NotificationScreen extends Component {
             <Text> Slidell 985-646-4258  </Text>
             <Text></Text>
             <Text>For all reports outside city limits:</Text>
-            <Text>Please contact St. Tammany Parish or State Transportation</Text>
+            <Text>Please contact St. Tammany Parish or State Transportation:</Text>
+            <Text> http://www.stpgov.org/</Text>
             
             
       </View>
