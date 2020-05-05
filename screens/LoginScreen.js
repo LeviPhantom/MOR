@@ -48,8 +48,8 @@ class LoginScreen extends Component {
               position: "relative",
             }}
           />
-          <Text style={{ fontSize: 28, fontWeight: "bold" }}>
-            Maintain Our Road
+          <Text style={{ fontSize: 26, fontWeight: "bold" }}>
+            MAINTAIN OUR ROAD
           </Text>
         </View>
         <StatusBar barStyle="light-content"></StatusBar>

@@ -50,11 +50,11 @@ class RegisterScreen extends Component {
               position: "relative",
             }}
           />
-          <Text style={{ fontSize: 28, fontWeight: "bold" }}>
-            Maintain Our Road
+          <Text style={{ fontSize: 26, fontWeight: "bold" }}>
+            MAINTAIN OUR ROAD
           </Text>
         </View>
-        <Text style={styles.gretting}>Sign up to get started</Text>
+        <Text style={styles.gretting}>Sign up to get started!</Text>
 
         <View style={styles.errorMessage}>
           {this.state.errorMessage && (
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   gretting: {
     marginTop: 15,
     fontSize: 18,
-    fontWeight: "400",
+    fontWeight: "500",
     textAlign: "center",
   },
   error: {
