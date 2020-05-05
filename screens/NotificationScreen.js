@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, Text, StyleSheet, FlatList, Image } from "react-native";
 import * as firebase from "firebase";
 import { Ionicons } from "@expo/vector-icons";
+import moment from "moment";
 class NotificationScreen extends Component {
   constructor(props) {
     super(props);
@@ -24,7 +25,9 @@ class NotificationScreen extends Component {
             <View>
               <Text style={styles.name}>{post.email}</Text>
               <Text style={styles.name}>{post.address}</Text>
-              <Text style={styles.timestamp}>{post.timestamp}</Text>
+              <Text style={styles.timestamp}>
+                {moment(post.timestamp).fromNow()}
+              </Text>
             </View>
             <Ionicons name="ios-more" size={24} color="#73788B" />
           </View>
