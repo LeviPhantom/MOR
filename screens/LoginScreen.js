@@ -4,19 +4,22 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  StatusBar
+  StatusBar,
+  Image,
+  Dimensions,
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import * as firebase from "firebase";
+const { width, height } = Dimensions.get("screen");
 
 class LoginScreen extends Component {
   static navigationOptions = {
-    headers: null
+    headers: null,
   };
   state = {
     email: "",
     password: "",
-    errorMessage: null
+    errorMessage: null,
   };
   handleLogin = () => {
     const { email, password } = this.state;
@@ -24,11 +27,31 @@ class LoginScreen extends Component {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .catch(error => this.setState({ errorMessage: error.message }));
+      .catch((error) => this.setState({ errorMessage: error.message }));
   };
   render() {
     return (
       <View style={styles.container}>
+        <View
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+            alignSelf: "center",
+            paddingVertical: 5,
+          }}
+        >
+          <Image
+            source={require("../assets/MORLOGO.png")}
+            style={{
+              width: width * 0.85,
+              height: height * 0.4,
+              position: "relative",
+            }}
+          />
+          <Text style={{ fontSize: 28, fontWeight: "bold" }}>
+            Maintain Our Road
+          </Text>
+        </View>
         <StatusBar barStyle="light-content"></StatusBar>
         <Text style={styles.gretting}>Welcome to MOR</Text>
 
@@ -43,7 +66,7 @@ class LoginScreen extends Component {
             <TextInput
               style={styles.input}
               autoCapitalize="none"
-              onChangeText={email => this.setState({ email })}
+              onChangeText={(email) => this.setState({ email })}
             ></TextInput>
           </View>
 
@@ -53,7 +76,7 @@ class LoginScreen extends Component {
               style={styles.input}
               autoCapitalize="none"
               secureTextEntry
-              onChangeText={password => this.setState({ password })}
+              onChangeText={(password) => this.setState({ password })}
             ></TextInput>
           </View>
         </View>
@@ -75,50 +98,50 @@ class LoginScreen extends Component {
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   gretting: {
-    marginTop: 32,
+    marginTop: 12,
     fontSize: 18,
-    fontWeight: "400",
-    textAlign: "center"
+    fontWeight: "500",
+    textAlign: "center",
   },
   error: {
     color: "#E9446A",
     fontSize: 13,
     fontWeight: "600",
-    textAlign: "center"
+    textAlign: "center",
   },
   errorMessage: {
-    height: 72,
+    height: 50,
     alignItems: "center",
     justifyContent: "center",
-    marginHorizontal: 30
+    marginHorizontal: 30,
   },
   form: {
     marginBottom: 48,
-    marginHorizontal: 30
+    marginHorizontal: 30,
   },
   inputTitle: {
     color: "#8A8F9E",
     fontSize: 10,
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   input: {
     borderBottomColor: "#8A8F9E",
     borderBottomWidth: StyleSheet.hairlineWidth,
     height: 36,
     fontSize: 15,
-    color: "#161F3D"
+    color: "#161F3D",
   },
   button: {
-    marginHorizontal: 30,
-      backgroundColor: "#6483a5",
+    marginHorizontal: 50,
+    backgroundColor: "#6483a5",
     borderRadius: 6,
-    height: 50,
+    height: 45,
     alignItems: "center",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 });
 
 export default LoginScreen;

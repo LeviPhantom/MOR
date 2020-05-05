@@ -1,31 +1,59 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Dimensions,
+} from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import * as firebase from "firebase";
+
+const { width, height } = Dimensions.get("screen");
 
 class RegisterScreen extends Component {
   state = {
     email: "",
     password: "",
     errorMessage: null,
-    name: ""
+    name: "",
   };
   handleSignUp = () => {
     firebase
       .auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
-      .then(userCredentials => {
+      .then((userCredentials) => {
         return userCredentials.user.updateProfile({
-          displayName: this.state.name
+          displayName: this.state.name,
         });
       })
-      .catch(error => this.setState({ errorMessage: error.message }));
+      .catch((error) => this.setState({ errorMessage: error.message }));
   };
 
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.gretting}>Welcome to MOR</Text>
+        <View
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+            alignSelf: "center",
+            paddingVertical: 5,
+          }}
+        >
+          <Image
+            source={require("../assets/MORLOGO.png")}
+            style={{
+              width: width * 0.85,
+              height: height * 0.4,
+              position: "relative",
+            }}
+          />
+          <Text style={{ fontSize: 28, fontWeight: "bold" }}>
+            Maintain Our Road
+          </Text>
+        </View>
         <Text style={styles.gretting}>Sign up to get started</Text>
 
         <View style={styles.errorMessage}>
@@ -39,7 +67,7 @@ class RegisterScreen extends Component {
             <TextInput
               style={styles.input}
               autoCapitalize="none"
-              onChangeText={name => this.setState({ name })}
+              onChangeText={(name) => this.setState({ name })}
             ></TextInput>
           </View>
 
@@ -48,7 +76,7 @@ class RegisterScreen extends Component {
             <TextInput
               style={styles.input}
               autoCapitalize="none"
-              onChangeText={email => this.setState({ email })}
+              onChangeText={(email) => this.setState({ email })}
             ></TextInput>
           </View>
 
@@ -58,7 +86,7 @@ class RegisterScreen extends Component {
               style={styles.input}
               autoCapitalize="none"
               secureTextEntry
-              onChangeText={password => this.setState({ password })}
+              onChangeText={(password) => this.setState({ password })}
             ></TextInput>
           </View>
         </View>
@@ -70,8 +98,8 @@ class RegisterScreen extends Component {
           onPress={() => this.props.navigation.navigate("Login")}
         >
           <Text style={{ color: "#414959", fontSize: 13 }}>
-            New to MOR?{" "}
-                    <Text style={{ fontWeight: "500", color: "#6483a5" }}>Login</Text>
+            Already have an account?{" "}
+            <Text style={{ fontWeight: "500", color: "#6483a5" }}>Login</Text>
           </Text>
         </TouchableOpacity>
       </View>
@@ -80,50 +108,50 @@ class RegisterScreen extends Component {
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   gretting: {
-    marginTop: 32,
+    marginTop: 15,
     fontSize: 18,
     fontWeight: "400",
-    textAlign: "center"
+    textAlign: "center",
   },
   error: {
     color: "#E9446A",
     fontSize: 13,
     fontWeight: "600",
-    textAlign: "center"
+    textAlign: "center",
   },
   errorMessage: {
-    height: 72,
+    height: 45,
     alignItems: "center",
     justifyContent: "center",
-    marginHorizontal: 30
+    marginHorizontal: 30,
   },
   form: {
-    marginBottom: 48,
-    marginHorizontal: 30
+    marginBottom: 40,
+    marginHorizontal: 30,
   },
   inputTitle: {
     color: "#8A8F9E",
     fontSize: 10,
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   input: {
     borderBottomColor: "#8A8F9E",
     borderBottomWidth: StyleSheet.hairlineWidth,
     height: 36,
     fontSize: 15,
-    color: "#161F3D"
+    color: "#161F3D",
   },
   button: {
-    marginHorizontal: 30,
-      backgroundColor: "#6483a5",
+    marginHorizontal: 50,
+    backgroundColor: "#6483a5",
     borderRadius: 6,
-    height: 50,
+    height: 45,
     alignItems: "center",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 });
 
 export default RegisterScreen;
