@@ -23,15 +23,16 @@ class NotificationScreen extends Component {
             }}
           >
             <View>
-              <Text style={styles.name}>{post.email}</Text>
-              <Text style={styles.name}>{post.address}</Text>
+              <Text style={styles.description}>{post.description}</Text>
+              <Text style={styles.name}>Posted by {post.email}</Text>
+
               <Text style={styles.timestamp}>
                 {moment(post.timestamp).fromNow()}
               </Text>
             </View>
-            <Ionicons name="ios-more" size={24} color="#73788B" />
+            {/* //<Ionicons name="ios-more" size={24} color="#73788B" /> */}
           </View>
-          <Text style={styles.posts}>{post.description}</Text>
+          <Text style={styles.posts}>{post.address}</Text>
           <Image
             source={{ uri: post.image }}
             style={styles.postImage}
@@ -62,6 +63,11 @@ class NotificationScreen extends Component {
   componentDidMount() {
     this.getPosts();
   }
+  onRefresh() {
+    this.setState({ isloading: true }, function () {
+      this.getPosts();
+    });
+  }
   render() {
     return (
       <View style={styles.container}>
@@ -74,6 +80,8 @@ class NotificationScreen extends Component {
           renderItem={({ item }) => this.renderPost(item)}
           keyExtractor={(item) => item.image}
           showsVerticalScrollIndicator={false}
+          onRefresh={() => this.onRefresh()}
+          refreshing={this.state.isLoading}
         />
       </View>
     );
@@ -114,18 +122,22 @@ const styles = StyleSheet.create({
     marginVertical: 8,
   },
   name: {
-    fontSize: 15,
-    fontWeight: "500",
+    fontSize: 14,
+    fontWeight: "400",
     color: "#454D65",
+  },
+  description: {
+    fontSize: 16,
+    fontWeight: "500",
   },
   timestamp: {
     fontSize: 11,
     color: "#C4C6CE",
-    marginTop: 4,
+    marginTop: 3,
   },
   post: {
-    marginTop: 16,
-    fontSize: 14,
+    marginTop: 17,
+    fontSize: 13,
     color: "#838899",
   },
   postImage: {

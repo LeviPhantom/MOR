@@ -70,6 +70,7 @@ class HomeScreen extends Component {
             style={{ flex: 1 }}
             region={this.state.region}
             showsUserLocation={true}
+            //onMarkerSelect={this.onMarkerPress(marker)}
           >
             {this.state.markers.map((marker, index) => (
               <MapView.Marker

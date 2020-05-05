@@ -289,10 +289,10 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 20,
-    marginHorizontal: 30,
+    marginHorizontal: 50,
     backgroundColor: "#6483a5",
     borderRadius: 6,
-    height: 50,
+    height: 45,
     alignItems: "center",
     justifyContent: "center",
   },
